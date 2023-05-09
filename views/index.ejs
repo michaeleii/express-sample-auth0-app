@@ -23,6 +23,7 @@
 			<% posts.forEach(post => { %>
 			<div>
 				<h3><%= post.title %></h3>
+				<p>Author: <%= post.user.f_name %> <%= post.user.l_name %></p>
 				<p><%= post.content %></p>
 			</div>
 			<% }) %>

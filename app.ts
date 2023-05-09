@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { auth, requiresAuth } from "express-openid-connect";
 import { PrismaClient } from "@prisma/client";
 
@@ -24,15 +24,42 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
-app.use(
-	auth({
-		...config,
-	})
-);
+app.use(auth(config));
+
+async function checkIfUserExists(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	const { user } = req.oidc;
+	if (!user) return next();
+	const userExists = await prisma.user.findUnique({
+		where: {
+			auth0Id: user.sub,
+		},
+	});
+	if (!userExists) {
+		await prisma.user.create({
+			data: {
+				auth0Id: user.sub,
+				f_name: user.f_name,
+				l_name: user.l_name,
+			},
+		});
+	}
+	next();
+}
+
+app.use(checkIfUserExists);
 
 app.get("/", async (req: Request, res: Response) => {
 	console.log(req.oidc.user);
-	const posts = await prisma.post.findMany();
+	const posts = await prisma.post.findMany({
+		include: {
+			user: true,
+		},
+	});
+	console.log(posts);
 	res.render("index", { user: req.oidc.user, posts });
 });
 app.get("/signup", (req: Request, res: Response) =>
@@ -52,13 +79,17 @@ app
 	.get((req: Request, res: Response) => res.render("createPost"))
 	.post(async (req: Request, res: Response) => {
 		const { title, content } = req.body;
-		const { user } = req.oidc;
+		const user = await prisma.user.findUnique({
+			where: {
+				auth0Id: req?.oidc?.user?.sub,
+			},
+		});
 		if (!user) return res.redirect("/");
 		await prisma.post.create({
 			data: {
 				title,
 				content,
-				userId: user.sub,
+				userId: user.id,
 			},
 		});
 		res.redirect("/");
