@@ -1,29 +1,30 @@
 {
-	"name": "express-auth0-sample-app",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"dev": "ts-node-dev --respawn --transpile-only app.ts",
-		"build": "tsc"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"@prisma/client": "^4.13.0",
-		"auth0": "^3.4.0",
-		"dotenv": "^16.0.3",
-		"ejs": "^3.1.9",
-		"express": "^4.18.2",
-		"express-openid-connect": "^2.16.0",
-		"prisma": "^4.13.0",
-		"pubnub": "^7.2.2",
-		"typescript": "^5.0.4"
-	},
-	"devDependencies": {
-		"@types/auth0": "^3.3.2",
-		"@types/express": "^4.17.17",
-		"ts-node-dev": "^2.0.0"
-	}
+  "name": "express-auth0-sample-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only app.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^4.13.0",
+    "auth0": "^3.4.0",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-openid-connect": "^2.16.0",
+    "prisma": "^4.13.0",
+    "pubnub": "^7.2.2",
+    "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/auth0": "^3.3.2",
+    "@types/express": "^4.17.17",
+    "prisma": "^4.14.0",
+    "ts-node-dev": "^2.0.0"
+  }
 }
