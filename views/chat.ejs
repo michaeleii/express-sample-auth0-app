@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chatroom</title>
+    <link rel="stylesheet" href="chat.css" />
+  </head>
+  <body>
+    <h1>Chatroom</h1>
+    <h2>Logged in as <%= user.nickname %></h2>
+    <form method="post" id="chatForm">
+      <input type="text" name="message" placeholder="Message" id="chatInput" />
+      <input
+        type="hidden"
+        name="sender"
+        id="sender"
+        value="<%= user.nickname %>"
+      />
+      <button>Send</button>
+    </form>
+    <div id="messageContainer"></div>
+  </body>
+  <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.7.2.2.js"></script>
+  <script>
+    let pubnub = new PubNub({
+      publishKey: "pub-c-e1940c4d-880f-4331-9252-3ee8d4b82b0f",
+      subscribeKey: "sub-c-eb8a5e05-e54f-4ede-8583-4f5301612ab2",
+      userId: "<%= user.sid %>",
+    });
+  </script>
+  <script src="chat.js"></script>
+</html>
